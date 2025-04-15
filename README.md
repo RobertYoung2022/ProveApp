@@ -1,53 +1,76 @@
 # ProveApp
 
-A modern full-stack application demonstrating proof of concept features with React and Python.
+A modern full-stack task management application built with React and Python.
 
 ## 🚀 Features
 
 - User Authentication & Authorization
 - Task Management System
-- Real-time Updates
-- Responsive Design
+- Docker Containerization
 - RESTful API Integration
+- Modern React with TypeScript
+- Flask Backend with SQLite
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React with TypeScript
+- React 19 with TypeScript
 - Vite for build tooling
+- Mantine UI Components
 - Modern CSS with responsive design
-- Component-based architecture
 
 ### Backend
-- Python
-- RESTful API endpoints
-- SQL Database
-- Secure authentication
+- Python 3.12
+- Flask with SQLAlchemy
+- SQLite Database
+- JWT Authentication
 
 ## 📋 Prerequisites
 
-Before you begin, ensure you have the following installed:
-- Node.js (v16 or higher)
-- Python (v3.8 or higher)
-- npm or yarn
+- Docker and Docker Compose
 - Git
 
-## 🔧 Installation
+## 🔧 Quick Start
 
-### Clone the Repository
+1. Clone the repository:
 ```bash
 git clone https://github.com/RobertYoung2022/ProveApp.git
 cd ProveApp
 ```
 
-### Frontend Setup
+2. Start the application:
+```bash
+docker-compose up --build
+```
+
+The application will be available at:
+- Frontend: http://localhost:5174
+- Backend API: http://localhost:5001
+
+## 🔍 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+
+### Tasks
+- `GET /api/tasks` - Get all tasks
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/:id` - Update task
+- `DELETE /api/tasks/:id` - Delete task
+
+## 💻 Development
+
+### Without Docker
+
+#### Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### Backend Setup
+#### Backend Setup
 ```bash
 cd backend
 python -m venv venv
@@ -58,11 +81,9 @@ python app.py
 
 ## 🌐 Environment Variables
 
-Create a `.env` file in both frontend and backend directories:
-
 ### Frontend (.env)
 ```env
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5001
 ```
 
 ### Backend (.env)
@@ -79,29 +100,17 @@ ProveApp/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── assets/
+│   │   ├── contexts/
 │   │   └── App.tsx
-│   ├── public/
+│   ├── Dockerfile
 │   └── package.json
 ├── backend/
 │   ├── app.py
-│   ├── schema.sql
+│   ├── Dockerfile
 │   └── requirements.txt
+├── docker-compose.yml
 └── README.md
 ```
-
-## 🔍 API Endpoints
-
-### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/logout` - User logout
-
-### Tasks
-- `GET /api/tasks` - Get all tasks
-- `POST /api/tasks` - Create new task
-- `PUT /api/tasks/:id` - Update task
-- `DELETE /api/tasks/:id` - Delete task
 
 ## 👥 Contributing
 
@@ -115,12 +124,8 @@ ProveApp/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🤝 Support
-
-For support, email [your-email@example.com] or open an issue in the repository.
-
 ## 🌟 Acknowledgments
 
-- Thanks to all contributors
-- Inspired by modern web development practices
-- Built with ❤️ using React and Python 
+- Built with modern web development practices
+- Containerized for easy deployment
+- Optimized for developer experience 

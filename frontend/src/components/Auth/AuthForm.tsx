@@ -1,99 +1,86 @@
-import { useState } from 'react';
-import {
-  TextInput,
-  PasswordInput,
-  Paper,
-  Title,
-  Container,
-  Button,
-  Text,
-  Stack,
-} from '@mantine/core';
-import { useAuth } from '../../lib/auth';
+import React, { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
-export function AuthForm() {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+export default function AuthForm() {
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { login, register } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
     try {
-      const { error: authError } = await (mode === 'signin' ? signIn : signUp)(
-        email,
-        password
-      );
-
-      if (authError) {
-        setError(authError.message);
+      if (isLogin) {
+        await login(email, password);
+      } else {
+        await register(email, password);
       }
     } catch (err) {
-      setError('An unexpected error occurred');
-    } finally {
-      setLoading(false);
+      setError('Authentication failed. Please try again.');
     }
   };
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" order={2}>
-        {mode === 'signin' ? 'Welcome back!' : 'Create an account'}
-      </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        {mode === 'signin' ? (
-          <>
-            Don't have an account?{' '}
-            <Button variant="subtle" size="sm" onClick={() => setMode('signup')}>
-              Create one
-            </Button>
-          </>
-        ) : (
-          <>
-            Already have an account?{' '}
-            <Button variant="subtle" size="sm" onClick={() => setMode('signin')}>
-              Sign in
-            </Button>
-          </>
-        )}
-      </Text>
+    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        {isLogin ? 'Login' : 'Register'}
+      </h2>
+      
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+          {error}
+        </div>
+      )}
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={handleSubmit}>
-          <Stack>
-            <TextInput
-              label="Email"
-              placeholder="your@email.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            required
+          />
+        </div>
 
-            <PasswordInput
-              label="Password"
-              placeholder="Your password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            required
+          />
+        </div>
 
-            {error && (
-              <Text c="red" size="sm">
-                {error}
-              </Text>
-            )}
+        <button
+          type="submit"
+          className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          {isLogin ? 'Login' : 'Register'}
+        </button>
 
-            <Button type="submit" loading={loading}>
-              {mode === 'signin' ? 'Sign in' : 'Create account'}
-            </Button>
-          </Stack>
-        </form>
-      </Paper>
-    </Container>
+        <div className="text-center mt-4">
+          <button
+            type="button"
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-sm text-blue-600 hover:text-blue-500"
+          >
+            {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 } 
